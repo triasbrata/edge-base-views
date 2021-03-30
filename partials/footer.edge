@@ -1,0 +1,79 @@
+<script src="{{generateURL('js/jquery.min.js')}}"></script>
+<script src="{{generateURL('js/popper.min.js')}}"></script>
+<script src="{{generateURL('js/moment.min.js')}}"></script>
+<script src="{{generateURL('js/bootstrap.min.js')}}"></script>
+<script src="{{generateURL('js/simplebar.min.js')}}"></script>
+<script src='{{generateURL('js/daterangepicker.js')}}'></script>
+<script src='{{generateURL('js/jquery.stickOnScroll.js')}}'></script>
+<script src="{{generateURL('js/tinycolor-min.js')}}"></script>
+<script src="{{generateURL('js/config.js')}}"></script>
+<script src="{{generateURL('js/apps.js')}}"></script>
+<script src="{{generateURL('js/d3.min.js')}}"></script>
+<script src="{{generateURL('js/topojson.min.js')}}"></script>
+<script src="{{generateURL('js/datamaps.all.min.js')}}"></script>
+<script src="{{generateURL('js/datamaps-zoomto.js')}}"></script>
+<script src="{{generateURL('js/datamaps.custom.js')}}"></script>
+<script src="{{generateURL('js/Chart.min.js')}}"></script>
+<script src="{{generateURL('js/dashboard-job-mouse.js')}}"></script>
+<script src="{{generateURL('js/moment.min.js')}}"></script>
+<script src="{{generateURL('js/lightslider.min.js')}}"></script>
+<script src="{{generateURL('js/bootbox.min.js')}}"></script>
+<script src="{{generateURL('js/select2.min.js')}}"></script>
+<script src="{{generateURL('js/lodash.min.js')}}"></script>
+<script>
+    /* defind global options */
+    Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
+    Chart.defaults.global.defaultFontColor = colors.mutedColor;
+</script>
+<script src="{{generateURL('js/gauge.min.js')}}"></script>
+<script src="{{generateURL('js/jquery.sparkline.min.js')}}"></script>
+<script src="{{generateURL('js/apexcharts.min.js')}}"></script>
+<script src="{{generateURL('js/apps.js')}}"></script>
+<script src="{{generateURL('js/toastr.min.js')}}"></script>
+@each(script in scripts)
+  <script src="{{script}}"></script>  
+@endeach
+<script type="application/json" id="messages">
+  {{{ JSON.stringify(message()) }}}
+</script>
+<script>
+  $(document).ready(function () {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-bottom-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": '0',
+      "extendedTimeOut": "0",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+      onShown(){
+        const content = $(this).find('.toast-message').html();
+        $(this).find('.toast-message').removeClass('toast-message').addClass('toast-body text-white');
+        $(this).find('.toast-title').removeClass('toast-title').addClass('toast-header').css('background', 'none');
+        $(this).find('.toast-progress').insertAfter($(this).find('.toast-body'))
+        const title = $(this).find('.toast-header').html();
+        $(this).find('.toast-header').html(`<strong class="mr-auto text-white">${title}</strong>`)
+        $(this).addClass('fade show')
+        $(this).find('.toast-close-button').removeClass('toast-close-button').addClass("ml-2 mb-1 mt-1 close").appendTo($(this).find('.toast-header')).html(`<span aria-hidden="true">×</span>`)
+      }
+    }
+    const messages = JSON.parse($('#messages').html());
+    for (const message of messages) {
+      let type = 'success';
+      if(["danger", 'error'].includes(message.type)){
+        type = 'error'
+      }
+      toastr[type](message.content, message.title)
+    }
+  })
+  
+</script>
+

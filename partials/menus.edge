@@ -1,0 +1,14 @@
+<ul class="navbar-nav flex-fill w-100 mb-2">
+     @each((groupMenu, name) in menus)
+          @if(name && !startWith(name, 'skip'))
+              <p class="text-muted nav-heading mt-4 mb-1">
+                  <span>{{name }}</span>
+              </p>  
+          @else
+              <div class="mt-4 mb-1"></div>
+          @endif
+        @each(menu in groupMenu)
+            @!component('lib::partials/menu',{menu, isChild:false})
+        @endeach
+    @endeach 
+</ul>

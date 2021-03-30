@@ -1,0 +1,18 @@
+ <div class="row mt-3 px-4 my-3">
+    <div class="col">
+      @set('startShow', Math.abs((parseInt(accessObject(meta,'currentPage',1),10)-1) * accessObject(meta,'itemsPerPage')))
+        <span>Showing {{startShow}} to {{startShow + parseInt(accessObject(meta,'itemCount'))}} of {{accessObject(meta,'totalItems')}} entries</span>
+    </div>
+    <div class="col">
+        <ul class="pagination justify-content-end">
+            
+            @each(page in pages(meta, baseUrl, query))
+              @if(page.div)
+                <li class="paginate_button page-item align-text-bottom disable " style="line-height: 32px;">…</li>
+              @else
+                <li class="paginate_button page-item {{page.class || ""}} {{page.active ? "active" : ""}}"><a href="{{page.url}}" aria-controls="dataTable-1" data-dt-idx="4" tabindex="0" class="page-link">{{page.page}}</a></li>
+              @endif
+            @endeach            
+        </ul>
+    </div>
+</div>

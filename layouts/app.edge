@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  @include('lib::partials/header')
+  <body class="vertical">
+    <div class="wrapper">
+      @include('lib::partials/topbar')
+      @include('lib::partials/sidebar')
+      <main role="main" class="main-content">
+        <div class="container-fluid">
+          @!section('body')
+        </div> <!-- .container-fluid -->
+        @include('lib::partials/notif-container')
+        @include('lib::partials/shortcut-container')
+        @include('lib::partials/setting-container')
+
+      </main> <!-- main -->
+    </div> <!-- .wrapper -->
+      @include('lib::partials/footer')
+      @section('script')      
+      <script>
+        $(document).ready(()=> {
+          $(document).on('click', '.invisible-form', function(e) {
+            e.preventDefault()
+            e.stopPropagation();
+            const url = `${$(this).attr('href')}?_method=delete`
+            bootbox.confirm({
+              message:'Are you sure delete this ?', 
+              callback(res){
+                if(res){
+                  $(this).find('form').submit();
+                }
+                
+              },
+              onShown(){
+                $('<form/>',{action: url, method:'post'}).appendTo($(this).find('.modal-body'))
+              }
+          })
+          })
+           // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          const forms = document.querySelectorAll('.needs-validation');
+
+          // Loop over them and prevent submission
+          Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener('submit', (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+          
+          $('select.form-control').select2({  theme: 'bootstrap4'});
+        })
+      </script>
+      @endsection
+  </body>
+</html>

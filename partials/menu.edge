@@ -1,0 +1,24 @@
+
+@if(menu.subject.length > 1 ? menu.subject.every(subject => can('read', subject)) : true)
+@if(Array.isArray(menu.childs) && menu.childs.length > 0)
+<li class="nav-item dropdown">
+    <a href="#id-menu-{{ menu.name.replace(RegExp(' ', 'g'), '-').toLowerCase() }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+    <i class="fe {{menu.icon}} fe-16"></i>
+    <span class="ml-3 item-text">{{menu.name}}</span>
+    {{--  <span class="sr-only">(current)</span>  --}}
+    </a>
+    <ul class="collapse list-unstyled pl-4 w-100" id="id-menu-{{menu.name.replace(RegExp(' ', 'g'), '-').toLowerCase()}}">
+        @each(menu in menu.childs)
+          @!component('lib::partials/menu',{menu:menu, isChild:true})
+        @endeach
+    </ul>
+</li>
+@else
+    <li class="nav-item">
+      <a class="nav-link {{isChild ? 'pl-3' : ''}}" href="{{menu.endPoint || '#'}}">
+          <i class="fe {{menu.icon}} fe-16"></i>
+          <span class=" {{isChild ? 'ml-1' : 'ml-3'}} item-text">{{menu.name}}</span>
+      </a>
+  </li>  
+  @endif
+@endif
